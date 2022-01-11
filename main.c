@@ -19,28 +19,48 @@ void double_n(unsigned int i, int *n) {
 }
 
 void print_n(unsigned int i, int *n) {
-	printf("%d: %d\n", i % 2, *n);
+	printf("%d: %d\n", i, *n);
+}
+
+int comp_n(int a, int b) {
+	if (a == b) {
+		return 0;
+	} else if (a < b) {
+		return -1;
+	} else {
+		return 1;
+	}
 }
 
 int main()
 {
-	vector_int vi = vector_int_create(NULL);
+	vector_int vi = vector_int_create(NULL, comp_n, NULL);
 	
-	vector_int_push(&vi, 0);
-	vector_int_push(&vi, 1);
-	vector_int_push(&vi, 2);
-	vector_int_push(&vi, 3);
-	vector_int_push(&vi, 4);
-	vector_int_push(&vi, 5);
 	vector_int_push(&vi, 6);
-	vector_int_push(&vi, 7);
-	vector_int_push(&vi, 8);
+	vector_int_push(&vi, 1);
+	vector_int_push(&vi, 4);
 	vector_int_push(&vi, 9);
+	vector_int_push(&vi, 2);
+	vector_int_push(&vi, 7);
+	vector_int_push(&vi, 0);
+	vector_int_push(&vi, 5);
+	vector_int_push(&vi, 8);
+	vector_int_push(&vi, 3);
+
+	vector_int vi2 = vector_int_copy(&vi);
 
 	vector_int_foreach(&vi, double_n);
+
+	vector_int_append(&vi, &vi2);
+
+	vector_int_sort(&vi);
+
 	vector_int_foreach(&vi, print_n);
-	
+
+
 	vector_int_destroy(&vi);
+	vector_int_destroy(&vi2);
+
 
 #if debugging
 	_CrtDumpMemoryLeaks();

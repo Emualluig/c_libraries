@@ -14,6 +14,8 @@
 #include "vector.h"
 #undef TYPE
 
+#include "string.h"
+
 void double_n(unsigned int i, int *n) {
 	*n *= 2;
 }
@@ -32,10 +34,9 @@ int comp_n(int a, int b) {
 	}
 }
 
-int main()
-{
+void vector_test() {
 	vector_int vi = vector_int_create(NULL, comp_n, NULL);
-	
+
 	vector_int_push(&vi, 6);
 	vector_int_push(&vi, 1);
 	vector_int_push(&vi, 4);
@@ -60,6 +61,11 @@ int main()
 
 	vector_int_destroy(&vi);
 	vector_int_destroy(&vi2);
+}
+
+int main()
+{
+
 
 
 #if debugging

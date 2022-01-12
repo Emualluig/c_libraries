@@ -68,6 +68,7 @@ int main()
 {
 	string *w = string_create("");
 
+	string_destroy(w);
 
 
 #if debugging

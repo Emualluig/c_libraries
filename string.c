@@ -19,6 +19,8 @@ struct _string {
 
 string* string_create(char *string_literal) {
 
+
+
 	if (string_literal != NULL) {
 		unsigned int index = 0;
 		while (string_literal[index] != '\0') {
@@ -28,4 +30,12 @@ string* string_create(char *string_literal) {
 	}
 
 	return NULL;
+}
+
+void string_destroy(string* str) {
+	if (str == NULL) {
+		return;
+	}
+
+
 }

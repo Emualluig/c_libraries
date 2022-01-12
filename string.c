@@ -1,10 +1,11 @@
 #include "string.h"
 
-struct {
+#include <stdlib.h>
+
+struct _string {
 	char letter;
-} typedef CharWrapper;
+};
 
-#define TYPE CharWrapper
-#include "vector.h"
-#undef TYPE
-
+string* string_create() {
+	return NULL;
+}

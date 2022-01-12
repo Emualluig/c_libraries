@@ -6,6 +6,7 @@
 #include <crtdbg.h>
 #endif // debugging
 
+#include "string.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,7 +15,6 @@
 #include "vector.h"
 #undef TYPE
 
-#include "string.h"
 
 void double_n(unsigned int i, int *n) {
 	*n *= 2;
@@ -56,6 +56,8 @@ void vector_test() {
 
 	vector_int_sort(&vi);
 
+	vector_int_remove(&vi, 10);
+
 	vector_int_foreach(&vi, print_n);
 
 
@@ -65,13 +67,13 @@ void vector_test() {
 
 int main()
 {
+	string *w = string_create();
 
 
 
 #if debugging
 	_CrtDumpMemoryLeaks();
 #endif // debugging
-
 
 	return 0;
 }

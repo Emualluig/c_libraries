@@ -178,6 +178,27 @@ bool VECTOR_TYPE_INSERT(TYPE)(VECTOR_TYPE(TYPE)* vector, unsigned int index, con
     return true;
 }
 
+#define VECTOR_TYPE_REMOVE(T) TOKENPASTE3(vector_, T, _remove)
+// vector_[type]_remove(vector, index) removes from the vector and returns the element located at index
+// requires: vector is not NULL, 0 <= index < vector->length
+// notes: elements to the right will be shift to the left to close the gap
+// time: O(n)
+TYPE VECTOR_TYPE_REMOVE(TYPE)(VECTOR_TYPE(TYPE)* vector, unsigned int index) {
+    assert(vector);
+    assert(vector->data);
+    assert(0 <= index);
+    assert(index < vector->length);
+
+    TYPE tmp = vector->data[index];
+
+    for (unsigned int i = index; i < vector->length - 1; i++) {
+        vector->data[i] = vector->data[i + 1];
+    }
+    vector->length -= 1;
+
+    return tmp;
+}
+
 #define VECTOR_TYPE_EXISTS(T) TOKENPASTE3(vector_, T, _exists)
 // vector_[type]_exists(vector, value, compare) returns the index of the first occurance of value in the vector
 // requires: vector is not NULL, compare is not NULL.
@@ -209,19 +230,9 @@ VECTOR_TYPE(TYPE) VECTOR_TYPE_COPY(TYPE)(VECTOR_TYPE(TYPE)* vector) {
     assert(vector);
     assert(vector->data);
 
-    // Copy data from the old array to the new one
-    bool custom_copy = vector->copy == NULL ? false : true;
+    // Allocate the memory
+    bool custom_copy = vector->copy != NULL;
     TYPE* new_array = malloc(sizeof(TYPE) * vector->size);
-    for (unsigned int i = 0; i < vector->length; i++) {
-        TYPE val = vector->data[i];
-        
-        // Copy depending on to do shallow or deep copy
-        if (custom_copy) {
-            new_array[i] = vector->copy(val);
-        } else {
-            new_array[i] = val;
-        }
-    }
 
     // Create the new vector
     VECTOR_TYPE(TYPE) vc = {
@@ -232,6 +243,24 @@ VECTOR_TYPE(TYPE) VECTOR_TYPE_COPY(TYPE)(VECTOR_TYPE(TYPE)* vector) {
         .compare = vector->compare,
         .copy = vector->copy,
     };
+
+    // If allocation failed, return vector with null data
+    if (new_array == NULL) {
+        return vc;
+    }
+
+    // Copy data into the vector
+    for (unsigned int i = 0; i < vector->length; i++) {
+        TYPE val = vector->data[i];
+
+        // Copy depending on to do shallow or deep copy
+        if (custom_copy) {
+            new_array[i] = vector->copy(val);
+        }
+        else {
+            new_array[i] = val;
+        }
+    }
 
     return vc;
 }

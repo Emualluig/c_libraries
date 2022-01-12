@@ -38,6 +38,16 @@ VECTOR_TYPE(TYPE) VECTOR_TYPE_CREATE(TYPE)(void (*destructor)(TYPE), int (*compa
     return vector;
 }
 
+#define VECTOR_TYPE_LENGTH(T) TOKENPASTE3(vector_, T, _length)
+// vector_[type]_length(vector) returns the length of the vector
+// requires: vector is not NULL
+// time: O(1)
+unsigned int VECTOR_TYPE_LENGTH(TYPE)(const VECTOR_TYPE(TYPE)* vector) {
+    assert(vector);
+
+    return vector->length;
+}
+
 #define VECTOR_TYPE_GET(T) TOKENPASTE3(vector_, T, _get)
 // vector_[type]_get(vector, index) returns the value at the specified index
 // requires: vector is not NULL, index < vector->length

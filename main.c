@@ -6,8 +6,6 @@
 #include <crtdbg.h>
 #endif // debugging
 
-#include "string.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -15,6 +13,7 @@
 #include "vector.h"
 #undef TYPE
 
+#include "string.h"
 
 void double_n(unsigned int i, int *n) {
 	*n *= 2;
@@ -67,7 +66,7 @@ void vector_test() {
 
 int main()
 {
-	string *w = string_create();
+	string *w = string_create("");
 
 
 

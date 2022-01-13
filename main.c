@@ -9,20 +9,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define TYPE int
-#include "vector.h"
-#undef TYPE
 
-#include "string.h"
-
+// START OF TESTS FOR VECTOR
 void double_n(unsigned int i, int *n) {
 	*n *= 2;
 }
-
 void print_n(unsigned int i, int *n) {
 	printf("%d: %d\n", i, *n);
 }
-
 int comp_n(int a, int b) {
 	if (a == b) {
 		return 0;
@@ -32,7 +26,9 @@ int comp_n(int a, int b) {
 		return 1;
 	}
 }
-
+#define TYPE int
+#include "vector.h"
+#undef TYPE
 void vector_test() {
 	vector_int vi = vector_int_create(NULL, comp_n, NULL);
 
@@ -64,12 +60,24 @@ void vector_test() {
 	vector_int_destroy(&vi2);
 }
 
-int main()
-{
-	string *w = string_create("");
+// TESTS FOR STRING
+#include "string.h"
+void string_test() {
+	string* w = string_create("");
 
 	string_destroy(w);
+}
 
+// TESTS FOR MEMPOOL
+#include "mempool.h"
+void mempool_test() {
+
+}
+
+int main()
+{
+
+	mempool_test();
 
 #if debugging
 	_CrtDumpMemoryLeaks();

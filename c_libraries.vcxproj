@@ -141,9 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="mempool.c" />
     <ClCompile Include="string.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mempool.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>

@@ -72,6 +72,40 @@ void string_test() {
 #include "mempool.h"
 void mempool_test() {
 
+	{
+		mempool* mp = mempool_create(5000);
+
+		void* a = mempool_malloc(128, mp);
+		void* b = mempool_malloc(128, mp);
+		void* c = mempool_malloc(4744, mp);
+		void* d = mempool_malloc(128, mp);
+
+		assert(a);
+		assert(b);
+		assert(c);
+		assert(!d); // There is not enough memory
+
+		//mempool_print(mp);
+
+		mempool_destroy(mp);
+	}
+	{
+		mempool* mp = mempool_create(5000);
+
+		void* a = mempool_malloc(128, mp);
+		void* b = mempool_malloc(128, mp);
+		void* c = mempool_malloc(128, mp);
+
+		printf("a: %p, b: %p, c: %p\n", a, b, c);
+
+		mempool_free(b, mp);
+
+		mempool_print(mp);
+
+		mempool_destroy(mp);
+	}
+
+
 }
 
 int main()

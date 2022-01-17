@@ -93,16 +93,23 @@ void* mempool_malloc(unsigned int size, mempool* memory_pool) {
 }
 
 int mempool_free(void* pointer, mempool* memory_pool) {
-	unsigned long long loc = memory_pool->memory;
-	for (int i = 0; i < memory_pool->mem_sec_length; i++) {
-		printf("On %p, target: %p\n", loc, pointer);
+	unsigned long long loc = (unsigned long long)memory_pool->memory + sizeof(mempool);
+	for (int i = 1; i < memory_pool->mem_sec_length; i++) {
 		if (loc == (unsigned long long)pointer) {
 			printf("No: %p\n", loc);
 			memory_pool->sections[i].is_occupied = 0;
+
+			// Merge with adjacent unoccupied memory sections
+
+			// Merge with above unoccupied block
+
+			// Merge with below unoccupied block
+
+
+			break;
 		}
 		loc += memory_pool->sections[i].size;
 	}
-
 
 	return 0;
 }

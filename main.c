@@ -83,7 +83,7 @@ void mempool_test() {
 		assert(a);
 		assert(b);
 		assert(c);
-		assert(!d); // There is not enough memory
+		assert(!d);
 
 		//mempool_print(mp);
 
@@ -95,6 +95,10 @@ void mempool_test() {
 		void* a = mempool_malloc(128, mp);
 		void* b = mempool_malloc(128, mp);
 		void* c = mempool_malloc(128, mp);
+		void* d = mempool_malloc(128, mp);
+		void* e = mempool_malloc(128, mp);
+		void* f = mempool_malloc(128, mp);
+		void* g = mempool_malloc(128, mp);
 
 		printf("a: %p, b: %p, c: %p\n", a, b, c);
 

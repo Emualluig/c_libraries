@@ -96,15 +96,32 @@ int mempool_free(void* pointer, mempool* memory_pool) {
 	unsigned long long loc = (unsigned long long)memory_pool->memory + sizeof(mempool);
 	for (int i = 1; i < memory_pool->mem_sec_length; i++) {
 		if (loc == (unsigned long long)pointer) {
-			printf("No: %p\n", loc);
 			memory_pool->sections[i].is_occupied = 0;
 
 			// Merge with adjacent unoccupied memory sections
 
 			// Merge with above unoccupied block
+			if ((i + 1 < memory_pool->mem_sec_length) && 
+				(memory_pool->sections[i + 1].is_occupied == 0)) {
+				memory_pool->sections[i].size += memory_pool->sections[i + 1].size;
+				// Remove section at i + 1 by 
+				// moving remaining memory section to the left
+				for (int j = i + 2; j < memory_pool->mem_sec_length; j++) {
+					memory_pool->sections[j - 1] = memory_pool->sections[j];
+				}
+				memory_pool->mem_sec_length -= 1;
+			}
 
 			// Merge with below unoccupied block
-
+			if ((i - 1 >= 0) && 
+				(memory_pool->sections[i - 1].is_occupied == 0)) {
+				memory_pool->sections[i].size += memory_pool->sections[i - 1].size;
+				// Move to the left to overwrite section at i - 1
+				for (int j = i; j < memory_pool->mem_sec_length; j++) {
+					memory_pool->sections[j - 1] = memory_pool->sections[j];
+				}
+				memory_pool->mem_sec_length -= 1;
+			}
 
 			break;
 		}
@@ -116,7 +133,7 @@ int mempool_free(void* pointer, mempool* memory_pool) {
 
 void mempool_print(mempool* memory_pool) {
 	assert(memory_pool);
-
+	printf("==========MEMPOOL PRINT START===========\n");
 	unsigned long long loc = memory_pool->memory;
 	for (int i = 0; i < memory_pool->mem_sec_length; i++) {
 		printf("========================================\n");
@@ -124,4 +141,5 @@ void mempool_print(mempool* memory_pool) {
 		printf("========================================\n");
 		loc += memory_pool->sections[i].size;
 	}
+	printf("===========MEMPOOL PRINT END============\n\n");
 }

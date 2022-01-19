@@ -99,11 +99,22 @@ void mempool_test() {
 		void* e = mempool_malloc(128, mp);
 		void* f = mempool_malloc(128, mp);
 		void* g = mempool_malloc(128, mp);
+		void* h = mempool_malloc(128, mp);
 
 		printf("a: %p, b: %p, c: %p\n", a, b, c);
 
+		mempool_free(c, mp);
 		mempool_free(b, mp);
+		mempool_free(a, mp);
+		mempool_print(mp);
 
+		mempool_free(e, mp);
+		mempool_free(g, mp);
+		mempool_free(f, mp);
+		mempool_print(mp);
+
+		mempool_free(h, mp);
+		mempool_free(d, mp);
 		mempool_print(mp);
 
 		mempool_destroy(mp);

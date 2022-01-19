@@ -1,7 +1,7 @@
 # c_libraries
 A collection of libraries such as String, Map, and unordered_map
 
-### TODO
+### Completed
  - [X] vector (generic)
  - [ ] string (10% completed, not currently working on)
  - [ ] map (similar to std::map but which uses a red-black binary tree)

@@ -10,7 +10,7 @@ mempool* mempool_create(unsigned int size);
 //
 void* mempool_malloc(unsigned int size, mempool* memory_pool);
 
-//
+// allocates addition memory of size 'size' to pointer
 void* mempool_realloc(void* pointer, unsigned int size, mempool* memory_pool);
 
 //

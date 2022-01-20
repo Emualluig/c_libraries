@@ -1,5 +1,6 @@
 #include "mempool.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -93,6 +94,7 @@ void* mempool_malloc(unsigned int size, mempool* memory_pool) {
 }
 
 int mempool_free(void* pointer, mempool* memory_pool) {
+	assert(memory_pool);
 	unsigned long long loc = (unsigned long long)memory_pool->memory + sizeof(mempool);
 	for (int i = 1; i < memory_pool->mem_sec_length; i++) {
 		if (loc == (unsigned long long)pointer) {
@@ -129,6 +131,77 @@ int mempool_free(void* pointer, mempool* memory_pool) {
 	}
 
 	return 0;
+}
+
+void* mempool_realloc(void* pointer, unsigned int size, mempool* memory_pool) {
+	assert(memory_pool);
+
+	// Find the index of the section the pointer refers to
+	unsigned long long loc = (unsigned long long)memory_pool->memory + sizeof(mempool);
+	unsigned int index = 1;
+	bool found = false;
+	for (; index < memory_pool->mem_sec_length; index++) {
+		if (loc == (unsigned long long)pointer) {
+			found = true;
+			break;
+		}
+		printf("P: %p\n", loc);
+		loc += memory_pool->sections[index].size;
+	}
+
+	if (!found) {
+		printf("POINTER NOT FOUND\n");
+		return NULL;
+	}
+
+	unsigned int current_size = memory_pool->sections[index].size;
+
+	// Check if can expand to next section
+	bool next_available = (index + 1 < memory_pool->mem_sec_length) && (memory_pool->sections[index + 1].is_occupied == 0);
+	if (next_available && (current_size + memory_pool->sections[index + 1].size >= size)) {
+		
+		memory_pool->sections[index].size += size;
+		memory_pool->sections[index + 1].size -= size;
+
+		// If next section is empty, destroy it by shifting left
+		if (memory_pool->sections[index + 1].size == 0) {
+			for (int i = index + 2; i < memory_pool->mem_sec_length; i++) {
+				memory_pool->sections[i - 1] = memory_pool->sections[i];
+			}
+			memory_pool->mem_sec_length -= 1;
+		}
+
+		return pointer;
+	}
+
+	// Then try to expand to previous section
+	bool prev_available = (0 <= index - 1) && (memory_pool->sections[index - 1].is_occupied == 0);
+	if (prev_available && (current_size + memory_pool->sections[index - 1].size >= size)) {
+		
+		memory_pool->sections[index].size += size;
+		memory_pool->sections[index - 1].size -= size;
+
+		// If prev section is empty, destroy it by shifting left
+		if (memory_pool->sections[index - 1].size == 0) {
+			for (int i = index; i < memory_pool->mem_sec_length; i++) {
+				memory_pool->sections[i - 1] = memory_pool->sections[i];
+			}
+			memory_pool->mem_sec_length -= 1;
+		}
+
+		// Copy memory into prev section
+		// TODO
+
+		return pointer;
+	}
+
+	// Try to expand to the next and the previous
+
+	// If both do not provide enough memory, relocate memory section
+
+	// Can't realloc
+	printf("REALLOC FAILED\n");
+	return pointer;
 }
 
 void mempool_print(mempool* memory_pool) {

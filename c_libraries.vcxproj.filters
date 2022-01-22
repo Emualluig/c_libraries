@@ -18,21 +18,9 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="string.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mempool.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="string.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mempool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
